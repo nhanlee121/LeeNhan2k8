@@ -1,0 +1,1313 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Pet Shop</title>
+    <link rel="icon" href="image_b87a7e.png" type="image/png" />
+
+    <style>
+      body {
+        font-family: Arial;
+        margin: 0;
+        background: #f5f5f5;
+      }
+
+      /* HEADER */
+      header {
+        background: #ff7f50;
+        color: white;
+        padding: 15px;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 24px;
+        font-weight: bold;
+      }
+
+      .menu {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+      }
+
+      .menu a {
+        color: white;
+        text-decoration: none;
+        font-weight: 500;
+      }
+
+      /* DROPDOWN MENU */
+      select {
+        padding: 7px;
+        border-radius: 5px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        outline: none;
+      }
+
+      /* BANNER */
+      .banner {
+        height: 420px;
+        background: url("https://images.unsplash.com/photo-1548199973-03cce0bbc87b")
+          center/cover;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 45px;
+        font-weight: bold;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+      }
+
+      /* FILTER SECTION (THANH LỌC) */
+      .filter-container {
+        background: white;
+        padding: 20px;
+        margin: 20px 50px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        display: flex;
+        gap: 20px;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      .filter-container select,
+      .filter-container button {
+        padding: 10px 15px;
+        font-size: 16px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+      }
+
+      /* THANH TRƯỢT GIÁ TIỀN */
+      .price-slider-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      input[type="range"] {
+        width: 250px;
+        cursor: pointer;
+        accent-color: #ff7f50;
+      }
+
+      .filter-container button {
+        background: #ff7f50;
+        color: white;
+        border: none;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .filter-container button:hover {
+        background: #ff5722;
+      }
+
+      /* SECTION */
+      .section {
+        padding: 50px;
+        text-align: center;
+      }
+
+      .section h2 {
+        margin-bottom: 30px;
+      }
+
+      /* PRODUCTS */
+      .products {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 25px;
+      }
+
+      .card {
+        background: white;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: 0.3s;
+      }
+
+      .card:hover {
+        transform: scale(1.05);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .card img {
+        width: 100%;
+        height: 300px;
+        object-fit: cover;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+      }
+
+      .card h3 {
+        margin: 10px;
+      }
+
+      .card p {
+        color: #ff5722;
+        font-weight: bold;
+      }
+
+      .card button {
+        background: #ff7f50;
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        margin-bottom: 15px;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+
+      .card button:hover {
+        background: #ff5722;
+      }
+
+      /* FOOTER */
+      footer {
+        background: #222;
+        color: white;
+        padding: 30px;
+        text-align: center;
+        margin-top: 40px;
+      }
+
+      .social a {
+        color: white;
+        margin: 10px;
+        text-decoration: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <nav>
+        <div class="logo">CUJO SHOP</div>
+        <div class="menu">
+          <a href="#" onclick="resetFilters()">Trang chủ</a>
+
+          <select onchange="filterByBreed(this.value)" class="nav-filter">
+            <option value="all">Chọn giống chó</option>
+            <option value="poodle">Poodle</option>
+            <option value="corgi">Corgi</option>
+            <option value="golden">Golden</option>
+            <option value="husky">Husky</option>
+            <option value="pug">Pug</option>
+            <option value="chihuahua">Chihuahua</option>
+          </select>
+
+          <select onchange="filterByBreed(this.value)" class="nav-filter">
+            <option value="all">Chọn giống mèo</option>
+            <option value="meoanh">Mèo Anh lông dài</option>
+            <option value="ragdoll">Ragdoll</option>
+            <option value="meoaln">Mèo Anh lông ngắn</option>
+            <option value="sphynx">Mèo Sphynx</option>
+            <option value="bengal">Mèo Bengal</option>
+          </select>
+
+          <select onchange="filterByBreed(this.value)" class="nav-filter">
+            <option value="all">Chọn giống chim</option>
+            <option value="vetxam">Vẹt xám úc</option>
+            <option value="sunconure">Sun conure</option>
+            <option value="chaomao">Chào mào</option>
+            <option value="yenhung">Yến Phụng</option>
+          </select>
+
+          <select onchange="filterByBreed(this.value)" class="nav-filter">
+            <option value="all">Phụ kiện</option>
+            <option value="thucan">Thức ăn</option>
+            <option value="dochoi">Đồ chơi</option>
+            <option value="vongco">Vòng cổ</option>
+            <option value="chuong">Chuồng/Balo</option>
+          </select>
+          <ul>
+            <li>
+              <a href="https://facebook.com/tenfanpage" target="_blank"
+                >Liên hệ</a
+              >
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <div class="banner">Thiên đường thú cưng</div>
+
+    <div class="filter-container">
+      <strong style="color: #333">Lọc Chi Tiết: </strong>
+      <select id="filter-type" onchange="applyFilters()">
+        <option value="all">Tất cả danh mục</option>
+        <option value="dog">Chó</option>
+        <option value="cat">Mèo</option>
+        <option value="bird">Chim & Vẹt</option>
+        <option value="accessory">Phụ kiện</option>
+      </select>
+
+      <div class="price-slider-wrapper">
+        <label for="filter-price">Giá tối đa: </label>
+        <input
+          type="range"
+          id="filter-price"
+          min="0"
+          max="50000000"
+          step="500000"
+          value="50000000"
+          oninput="updatePriceLabel()"
+        />
+        <span id="price-val" style="color: #ff5722">50.000.000đ</span>
+      </div>
+
+      <button onclick="resetFilters()">Bỏ Lọc (Xem tất cả)</button>
+    </div>
+
+    <section class="section">
+      <h2>Chó bán chạy</h2>
+      <div class="products">
+        <div
+          class="card"
+          data-breed="poodle"
+          data-type="dog"
+          data-price="16000000"
+        >
+          <img
+            src="https://i.pinimg.com/1200x/4e/1b/24/4e1b2428938c26850705085df48574ef.jpg"
+          />
+          <h3>Poodle</h3>
+          <p>16.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="corgi"
+          data-type="dog"
+          data-price="16000000"
+        >
+          <img
+            src="https://i.pinimg.com/736x/a0/97/84/a09784bf4103cd7d5b5873e6fe1c4ba7.jpg"
+          />
+          <h3>Corgi</h3>
+          <p>16.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="golden"
+          data-type="dog"
+          data-price="14000000"
+        >
+          <img
+            src="https://i.pinimg.com/736x/86/ad/f9/86adf971c17679c189f7f9972585fd35.jpg"
+          />
+          <h3>Golden</h3>
+          <p>14.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="husky"
+          data-type="dog"
+          data-price="18000000"
+        >
+          <img
+            src="https://i.pinimg.com/736x/6e/6d/c1/6e6dc19c2e9076fbbde2883bf2b9bc02.jpg"
+          />
+          <h3>Husky</h3>
+          <p>18.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="pug"
+          data-type="dog"
+          data-price="12000000"
+        >
+          <img
+            src="https://placehold.co/400x400/eeeeee/333333?text=Anh+Cho+Pug"
+          />
+          <h3>Pug</h3>
+          <p>12.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="chihuahua"
+          data-type="dog"
+          data-price="8000000"
+        >
+          <img
+            src="https://placehold.co/400x400/eeeeee/333333?text=Anh+Cho+Chihuahua"
+          />
+          <h3>Chihuahua</h3>
+          <p>8.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="bullphap"
+          data-type="dog"
+          data-price="25000000"
+        >
+          <img
+            src="https://placehold.co/400x400/eeeeee/333333?text=Anh+Bull+Phap"
+          />
+          <h3>Bull Pháp</h3>
+          <p>25.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="shiba"
+          data-type="dog"
+          data-price="22000000"
+        >
+          <img
+            src="https://placehold.co/400x400/eeeeee/333333?text=Anh+Shiba+Inu"
+          />
+          <h3>Shiba Inu</h3>
+          <p>22.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="samoyed"
+          data-type="dog"
+          data-price="19000000"
+        >
+          <img
+            src="https://placehold.co/400x400/eeeeee/333333?text=Anh+Samoyed"
+          />
+          <h3>Samoyed</h3>
+          <p>19.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="alaska"
+          data-type="dog"
+          data-price="20000000"
+        >
+          <img
+            src="https://placehold.co/400x400/eeeeee/333333?text=Anh+Alaska"
+          />
+          <h3>Alaska</h3>
+          <p>20.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="phocsoc"
+          data-type="dog"
+          data-price="9000000"
+        >
+          <img
+            src="https://placehold.co/400x400/eeeeee/333333?text=Anh+Phoc+Soc"
+          />
+          <h3>Phốc Sóc</h3>
+          <p>9.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="doberman"
+          data-type="dog"
+          data-price="15000000"
+        >
+          <img
+            src="https://placehold.co/400x400/eeeeee/333333?text=Anh+Doberman"
+          />
+          <h3>Doberman</h3>
+          <p>15.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="pitbull"
+          data-type="dog"
+          data-price="11000000"
+        >
+          <img
+            src="https://placehold.co/400x400/eeeeee/333333?text=Anh+Pitbull"
+          />
+          <h3>Pitbull</h3>
+          <p>11.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="becgie"
+          data-type="dog"
+          data-price="13000000"
+        >
+          <img
+            src="https://placehold.co/400x400/eeeeee/333333?text=Anh+Becgie"
+          />
+          <h3>Becgie</h3>
+          <p>13.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="beagle"
+          data-type="dog"
+          data-price="10000000"
+        >
+          <img
+            src="https://placehold.co/400x400/eeeeee/333333?text=Anh+Beagle"
+          />
+          <h3>Beagle</h3>
+          <p>10.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Mèo nổi bật</h2>
+      <div class="products">
+        <div
+          class="card"
+          data-breed="meoanh"
+          data-type="cat"
+          data-price="30000000"
+        >
+          <img
+            src="https://i.pinimg.com/736x/5c/3f/82/5c3f82c41b4e64fd7ef5fe8c6c2444d3.jpg"
+          />
+          <h3>Mèo Anh lông dài</h3>
+          <p>30.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="ragdoll"
+          data-type="cat"
+          data-price="18000000"
+        >
+          <img
+            src="https://i.pinimg.com/736x/2b/a5/19/2ba5191bc7c04e918d493fe5959fedaa.jpg"
+          />
+          <h3>Ragdoll</h3>
+          <p>18.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="meoaln"
+          data-type="cat"
+          data-price="12000000"
+        >
+          <img src="https://placehold.co/400x400/ffe4e1/333?text=Anh+Meo+ALN" />
+          <h3>Mèo ALN</h3>
+          <p>12.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="batu"
+          data-type="cat"
+          data-price="15000000"
+        >
+          <img
+            src="https://placehold.co/400x400/ffe4e1/333?text=Anh+Meo+Ba+Tu"
+          />
+          <h3>Mèo Ba Tư</h3>
+          <p>15.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="sphynx"
+          data-type="cat"
+          data-price="25000000"
+        >
+          <img
+            src="https://placehold.co/400x400/ffe4e1/333?text=Anh+Meo+Sphynx"
+          />
+          <h3>Mèo Sphynx</h3>
+          <p>25.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="xiem"
+          data-type="cat"
+          data-price="8000000"
+        >
+          <img
+            src="https://placehold.co/400x400/ffe4e1/333?text=Anh+Meo+Xiem"
+          />
+          <h3>Mèo Xiêm</h3>
+          <p>8.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="scottish"
+          data-type="cat"
+          data-price="14000000"
+        >
+          <img
+            src="https://placehold.co/400x400/ffe4e1/333?text=Anh+Scottish+Fold"
+          />
+          <h3>Mèo Scottish Fold</h3>
+          <p>14.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="munchkin"
+          data-type="cat"
+          data-price="20000000"
+        >
+          <img
+            src="https://placehold.co/400x400/ffe4e1/333?text=Anh+Munchkin"
+          />
+          <h3>Mèo Munchkin</h3>
+          <p>20.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="bengal"
+          data-type="cat"
+          data-price="22000000"
+        >
+          <img
+            src="https://placehold.co/400x400/ffe4e1/333?text=Anh+Meo+Bengal"
+          />
+          <h3>Mèo Bengal</h3>
+          <p>22.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="mainecoon"
+          data-type="cat"
+          data-price="28000000"
+        >
+          <img
+            src="https://placehold.co/400x400/ffe4e1/333?text=Anh+Maine+Coon"
+          />
+          <h3>Mèo Maine Coon</h3>
+          <p>28.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="meonga"
+          data-type="cat"
+          data-price="16000000"
+        >
+          <img src="https://placehold.co/400x400/ffe4e1/333?text=Anh+Meo+Nga" />
+          <h3>Mèo Nga</h3>
+          <p>16.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="meomuop"
+          data-type="cat"
+          data-price="500000"
+        >
+          <img
+            src="https://placehold.co/400x400/ffe4e1/333?text=Anh+Meo+Muop"
+          />
+          <h3>Mèo Mướp</h3>
+          <p>500.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="meoden"
+          data-type="cat"
+          data-price="800000"
+        >
+          <img src="https://placehold.co/400x400/ffe4e1/333?text=Anh+Meo+Den" />
+          <h3>Mèo Đen</h3>
+          <p>800.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="meotamthe"
+          data-type="cat"
+          data-price="1000000"
+        >
+          <img
+            src="https://placehold.co/400x400/ffe4e1/333?text=Anh+Meo+Tam+The"
+          />
+          <h3>Mèo Tam Thể</h3>
+          <p>1.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="rungnauy"
+          data-type="cat"
+          data-price="18000000"
+        >
+          <img
+            src="https://placehold.co/400x400/ffe4e1/333?text=Anh+Rung+Na+Uy"
+          />
+          <h3>Mèo Rừng Na Uy</h3>
+          <p>18.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Chim & Vẹt nổi bật</h2>
+      <div class="products">
+        <div
+          class="card"
+          data-breed="vetxam"
+          data-type="bird"
+          data-price="7540000"
+        >
+          <img
+            src="https://i.pinimg.com/736x/71/6c/16/716c16eb52313689cc425e9e9361794a.jpg"
+          />
+          <h3>Vẹt xám úc</h3>
+          <p>7.540.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="sunconure"
+          data-type="bird"
+          data-price="3000000"
+        >
+          <img
+            src="https://i.pinimg.com/736x/c1/e7/ab/c1e7ab4fbe941cdf38e5acfe20fcb5f2.jpg"
+          />
+          <h3>Sun conure</h3>
+          <p>3.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="quaker"
+          data-type="bird"
+          data-price="6520000"
+        >
+          <img
+            src="https://i.pinimg.com/736x/30/20/08/3020080f91088aeee41cba09c9bd587a.jpg"
+          />
+          <h3>Vẹt Quaker</h3>
+          <p>6.520.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="vetcute"
+          data-type="bird"
+          data-price="15000000"
+        >
+          <img
+            src="https://i.pinimg.com/736x/b0/71/bd/b071bdab6b942e80ba2dcf75d42ae4ed.jpg"
+          />
+          <h3>Vẹt cute (Amazon)</h3>
+          <p>15.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="macaw"
+          data-type="bird"
+          data-price="45000000"
+        >
+          <img
+            src="https://placehold.co/400x400/e0f7fa/333?text=Anh+Vet+Macaw"
+          />
+          <h3>Vẹt Macaw</h3>
+          <p>45.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="cockatoo"
+          data-type="bird"
+          data-price="25000000"
+        >
+          <img
+            src="https://placehold.co/400x400/e0f7fa/333?text=Anh+Vet+Cockatoo"
+          />
+          <h3>Vẹt Cockatoo</h3>
+          <p>25.000.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="yenphung"
+          data-type="bird"
+          data-price="200000"
+        >
+          <img
+            src="https://placehold.co/400x400/e0f7fa/333?text=Anh+Yen+Phung"
+          />
+          <h3>Yến Phụng</h3>
+          <p>200.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="chaomao"
+          data-type="bird"
+          data-price="800000"
+        >
+          <img
+            src="https://placehold.co/400x400/e0f7fa/333?text=Anh+Chao+Mao"
+          />
+          <h3>Chim Chào Mào</h3>
+          <p>800.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="hoami"
+          data-type="bird"
+          data-price="1200000"
+        >
+          <img src="https://placehold.co/400x400/e0f7fa/333?text=Anh+Hoa+Mi" />
+          <h3>Chim Họa Mi</h3>
+          <p>1.200.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="vanhkhuyen"
+          data-type="bird"
+          data-price="400000"
+        >
+          <img
+            src="https://placehold.co/400x400/e0f7fa/333?text=Anh+Vanh+Khuyen"
+          />
+          <h3>Chim Vành Khuyên</h3>
+          <p>400.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="cugay"
+          data-type="bird"
+          data-price="500000"
+        >
+          <img src="https://placehold.co/400x400/e0f7fa/333?text=Anh+Cu+Gay" />
+          <h3>Chim Cu Gáy</h3>
+          <p>500.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="chichchoe"
+          data-type="bird"
+          data-price="600000"
+        >
+          <img
+            src="https://placehold.co/400x400/e0f7fa/333?text=Anh+Chich+Choe"
+          />
+          <h3>Chim Chích Chòe</h3>
+          <p>600.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="saobietnoi"
+          data-type="bird"
+          data-price="350000"
+        >
+          <img src="https://placehold.co/400x400/e0f7fa/333?text=Anh+Sao+Noi" />
+          <h3>Chim Sáo Biết Nói</h3>
+          <p>350.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="hoangyen"
+          data-type="bird"
+          data-price="900000"
+        >
+          <img
+            src="https://placehold.co/400x400/e0f7fa/333?text=Anh+Hoang+Yen"
+          />
+          <h3>Chim Hoàng Yến</h3>
+          <p>900.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Phụ kiện thú cưng</h2>
+      <div class="products">
+        <div
+          class="card"
+          data-breed="thucan"
+          data-type="accessory"
+          data-price="200000"
+        >
+          <img
+            src="https://i.pinimg.com/736x/f0/3b/49/f03b49b67fa8ab4152cceead7c1b42ca.jpg"
+          />
+          <h3>Thức ăn chó mèo</h3>
+          <p>200.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="dochoi"
+          data-type="accessory"
+          data-price="120000"
+        >
+          <img
+            src="https://i.pinimg.com/1200x/6e/72/97/6e7297ac1769cc649120ae88c5264a23.jpg"
+          />
+          <h3>Đồ chơi thú cưng</h3>
+          <p>120.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="vongco"
+          data-type="accessory"
+          data-price="90000"
+        >
+          <img
+            src="https://i.pinimg.com/1200x/e0/6f/7c/e06f7ca56a7ea6246b42a6789121e0ad.jpg"
+          />
+          <h3>Vòng cổ</h3>
+          <p>90.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="catvesinh"
+          data-type="accessory"
+          data-price="150000"
+        >
+          <img
+            src="https://placehold.co/400x400/fff3e0/333?text=Anh+Cat+Ve+Sinh"
+          />
+          <h3>Cát vệ sinh</h3>
+          <p>150.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="chuong"
+          data-type="accessory"
+          data-price="350000"
+        >
+          <img
+            src="https://placehold.co/400x400/fff3e0/333?text=Anh+Balo+Thu+Cung"
+          />
+          <h3>Balo phi hành gia</h3>
+          <p>350.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="nemngu"
+          data-type="accessory"
+          data-price="280000"
+        >
+          <img src="https://placehold.co/400x400/fff3e0/333?text=Anh+Nem+Ngu" />
+          <h3>Nệm ngủ êm ái</h3>
+          <p>280.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="batan"
+          data-type="accessory"
+          data-price="85000"
+        >
+          <img src="https://placehold.co/400x400/fff3e0/333?text=Anh+Bat+An" />
+          <h3>Bát ăn chống nghẹn</h3>
+          <p>85.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="luoc"
+          data-type="accessory"
+          data-price="60000"
+        >
+          <img
+            src="https://placehold.co/400x400/fff3e0/333?text=Anh+Luoc+Chai"
+          />
+          <h3>Lược chải lông</h3>
+          <p>60.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="suatam"
+          data-type="accessory"
+          data-price="180000"
+        >
+          <img src="https://placehold.co/400x400/fff3e0/333?text=Anh+Sua+Tam" />
+          <h3>Sữa tắm chó mèo</h3>
+          <p>180.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="xitkhumui"
+          data-type="accessory"
+          data-price="110000"
+        >
+          <img
+            src="https://placehold.co/400x400/fff3e0/333?text=Anh+Xit+Khu+Mui"
+          />
+          <h3>Xịt khử mùi</h3>
+          <p>110.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="catmong"
+          data-type="accessory"
+          data-price="45000"
+        >
+          <img
+            src="https://placehold.co/400x400/fff3e0/333?text=Anh+Kim+Cat+Mong"
+          />
+          <h3>Kìm cắt móng</h3>
+          <p>45.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="chuong"
+          data-type="accessory"
+          data-price="450000"
+        >
+          <img
+            src="https://placehold.co/400x400/fff3e0/333?text=Anh+Chuong+Sat"
+          />
+          <h3>Chuồng sắt gập</h3>
+          <p>450.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="supthuong"
+          data-type="accessory"
+          data-price="55000"
+        >
+          <img
+            src="https://placehold.co/400x400/fff3e0/333?text=Anh+Sup+Thuong"
+          />
+          <h3>Súp thưởng (Gói)</h3>
+          <p>55.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="dochoi"
+          data-type="accessory"
+          data-price="35000"
+        >
+          <img
+            src="https://placehold.co/400x400/fff3e0/333?text=Anh+Can+Cau+Meo"
+          />
+          <h3>Đồ chơi cần câu</h3>
+          <p>35.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+
+        <div
+          class="card"
+          data-breed="xuonggam"
+          data-type="accessory"
+          data-price="75000"
+        >
+          <img
+            src="https://placehold.co/400x400/fff3e0/333?text=Anh+Xuong+Gam"
+          />
+          <h3>Xương gặm sạch răng</h3>
+          <p>75.000đ</p>
+          <button>Mua ngay</button>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>PetShop</h3>
+            <p>
+              <i class="fas fa-map-marker-alt"></i> số 6 Hoàng Hoa Thám, Phường
+              7, Quận Bình Thạnh, Thành phố Hồ Chí Minh
+            </p>
+            <p><i class="fas fa-phone"></i> 0909976091</p>
+          </div>
+
+          <div class="footer-section">
+            <h3>Hỗ trợ khách hàng</h3>
+            <a href="#">Chính sách vận chuyển</a>
+            <a href="#">Chính sách đổi trả</a>
+            <a href="#">Câu hỏi thường gặp</a>
+            <a href="#">Hướng dẫn mua hàng</a>
+          </div>
+
+          <div class="footer-section">
+            <h3>Theo dõi chúng tôi</h3>
+            <p>Kết nối với chúng tôi qua mạng xã hội</p>
+
+            <div class="social-icons">
+              <a
+                href="https://www.facebook.com/profile.php?id=61583670255906"
+                target="_blank"
+                title="Facebook"
+              >
+                <i class="fab fa-facebook-f"></i>
+              </a>
+            </div>
+
+            <div style="margin-top: 15px; font-size: 14px; color: #bdc3c7">
+              <p>Liên hệ trực tiếp:</p>
+              <p>
+                <i class="fab fa-facebook"></i> Facebook:
+                <a
+                  href="https://www.facebook.com/profile.php?id=61583670255906"
+                  target="_blank"
+                  style="color: #3498db"
+                  >cujoshop</a
+                >
+              </p>
+              <p>
+                <i class="fab fa-instagram"></i> Instagram:
+                <a
+                  href="https://www.instagram.com/leenhan.2802/"
+                  target="_blank"
+                  style="color: #e84393"
+                  >cujoshop</a
+                >
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="copyright">&copy; 2026 PetShop</div>
+      </div>
+
+      <div
+        style="
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          cursor: pointer;
+          text-align: center;
+        "
+        onclick="window.location.href = 'tel:0938078242'"
+      >
+        <div
+          style="
+            background-color: #0068ff;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+          "
+        >
+          <div
+            style="
+              color: white;
+              font-size: 24px;
+              font-weight: bold;
+              line-height: 1;
+            "
+          >
+            Z
+          </div>
+          <div
+            style="
+              color: white;
+              font-size: 8px;
+              font-weight: bold;
+              letter-spacing: 0.5px;
+            "
+          >
+            TƯ VẤN
+          </div>
+        </div>
+        <div
+          style="
+            background-color: white;
+            border-radius: 12px;
+            padding: 4px 8px;
+            font-size: 11px;
+            font-weight: bold;
+            color: #0068ff;
+            margin-top: 5px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+          "
+        >
+          📞 GỌI NGAY
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      let currentBreedFilter = "all";
+
+      // Hàm lọc theo giống thú cưng (từ thanh điều hướng trên cùng)
+      function filterByBreed(breed) {
+        currentBreedFilter = breed;
+
+        // Tự động trả các menu khác về chữ "Chọn giống..." để tránh lỗi logic
+        document.querySelectorAll(".nav-filter").forEach((sel) => {
+          if (sel.value !== breed && sel.value !== "all") {
+            sel.value = "all";
+          }
+        });
+
+        // Tự động gỡ bộ lọc "Loại" ở thanh trượt vì người dùng đã chọn chính xác con vật
+        document.getElementById("filter-type").value = "all";
+
+        applyFilters();
+      }
+
+      // Hàm cập nhật chữ hiển thị số tiền khi kéo thanh trượt
+      function updatePriceLabel() {
+        let price = document.getElementById("filter-price").value;
+        document.getElementById("price-val").innerText =
+          new Intl.NumberFormat("vi-VN").format(price) + "đ";
+        applyFilters();
+      }
+
+      // Nút Bỏ lọc (Trả web về như cũ)
+      function resetFilters() {
+        currentBreedFilter = "all";
+        document.getElementById("filter-type").value = "all";
+        document.getElementById("filter-price").value = 50000000;
+        document
+          .querySelectorAll(".nav-filter")
+          .forEach((sel) => (sel.value = "all"));
+        updatePriceLabel();
+      }
+
+      // Hàm logic chính xử lý việc Ẩn/Hiện sản phẩm
+      function applyFilters() {
+        let typeFilter = document.getElementById("filter-type").value;
+        let maxPrice = parseInt(document.getElementById("filter-price").value);
+        let cards = document.querySelectorAll(".card");
+
+        cards.forEach((card) => {
+          let cardType = card.getAttribute("data-type");
+          let cardBreed = card.getAttribute("data-breed");
+          let cardPrice = parseInt(card.getAttribute("data-price"));
+
+          let isVisible = true;
+
+          // 1. Kiểm tra lọc theo "Giống cụ thể" (như Poodle, Corgi...)
+          if (
+            currentBreedFilter !== "all" &&
+            cardBreed !== currentBreedFilter
+          ) {
+            isVisible = false;
+          }
+
+          // 2. Kiểm tra lọc theo "Loại động vật" (Chó, mèo, chim...)
+          if (typeFilter !== "all" && cardType !== typeFilter) {
+            isVisible = false;
+          }
+
+          // 3. Kiểm tra lọc theo "Giá tiền" (Thanh trượt)
+          if (cardPrice > maxPrice) {
+            isVisible = false;
+          }
+
+          // Ẩn hoặc hiện khung sản phẩm dựa theo kết quả kiểm tra
+          if (isVisible) {
+            card.style.display = "block";
+          } else {
+            card.style.display = "none";
+          }
+        });
+      }
+    </script>
+  </body>
+</html>
